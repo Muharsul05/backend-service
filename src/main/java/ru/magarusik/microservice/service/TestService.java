@@ -12,7 +12,7 @@ public class TestService {
     @Autowired
     private TestRepository repository;
 
-    public List<Test> getAllTestData(){
+    public List<Test> getAllTestData() {
         return repository.findAll();
     }
 
