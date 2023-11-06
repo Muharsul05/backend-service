@@ -1,17 +1,26 @@
 spring:
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-
   datasource:
     url: jdbc:postgresql://postgresql:5432/test
     username: magarusik
     password: 1312
     driverClassName: org.postgresql.Driver
 
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
 server:
   port: 8080
   servlet:
     context-path: /microservice/api/
+
+management:
+  endpoints.web.exposure.include: 'prometheus, health'
+  metrics:
+    export:
+      prometheus:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true

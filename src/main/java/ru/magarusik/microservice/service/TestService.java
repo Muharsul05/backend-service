@@ -1,5 +1,6 @@
 package ru.magarusik.microservice.service;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.magarusik.microservice.entity.Test;
@@ -12,7 +13,8 @@ public class TestService {
     @Autowired
     private TestRepository repository;
 
-    public List<Test> getAllTestData(){
+    @Timed("getAllTestDataService")
+    public List<Test> getAllTestData() {
         return repository.findAll();
     }
 
