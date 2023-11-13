@@ -5,17 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "test")
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Test {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-
     private String name;
-    private boolean archived;
-
+    private String email;
+    private String password;
+    private Role role = Role.USER_ROLE;
 }
