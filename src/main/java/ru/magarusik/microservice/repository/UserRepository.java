@@ -7,6 +7,6 @@ import ru.magarusik.microservice.entity.UserEntity;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    public Optional<UserEntity> findByEmail(String email);
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    Optional<UserEntity> findByName(String name);
 }
