@@ -18,14 +18,17 @@ import ru.magarusik.microservice.service.UserService;
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Autowired
-    UserService userService;
+    private UserService userService;
+  
     @Autowired
     private JwtTokenRepository jwtTokenRepository;
+  
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
+  
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

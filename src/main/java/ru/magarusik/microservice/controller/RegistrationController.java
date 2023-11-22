@@ -13,7 +13,7 @@ import ru.magarusik.microservice.service.UserService;
 public class RegistrationController {
     @Autowired
     private UserService userService;
-
+  
     @PostMapping("/registration")
     public void registration(@RequestBody UserEntity userEntity) {
         userService.saveUser(userEntity);
