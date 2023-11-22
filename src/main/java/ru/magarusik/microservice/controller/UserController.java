@@ -20,8 +20,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public UserEntity getUserEntity(@PathVariable Long id) {
-        return userService.getUserEntityById(id).orElse(new UserEntity());
+    @GetMapping(value = "/{id}")
+    public UserEntity getUserEntity(@PathVariable Long id) throws RuntimeException {
+        var user = userService.getUserEntityById(id);
+
+        if (user.isEmpty()) {
+            throw new RuntimeException(String.format("User with id: %d not found", id));
+        }
+
+        return user.get();
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public String handleException(RuntimeException exception) {
+        return exception.getMessage();
     }
 }
