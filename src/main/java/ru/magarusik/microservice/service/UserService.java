@@ -62,30 +62,4 @@ public class UserService implements UserDetailsService {
                 new HashSet<>()
         );
     }
-
-    public Optional<UserEntity> getUserEntityById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public UserEntity getUserEntityByName(String name) {
-        return userRepository.findByName(name).orElse(null);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        var user = getUserEntityByName(login);
-
-        if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException(String.format("User %s is not found", login));
-        }
-        return new org.springframework.security.core.userdetails.User(
-                user.getName(),
-                user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                new HashSet<>()
-        );
-    }
 }
