@@ -14,14 +14,14 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    public List<PostEntity> getAllPosts() {
+    public @ResponseBody List<PostEntity> getAllPosts() {
         return postService.getAllPosts();
     }
 
     @GetMapping("/get/{id}")
-    public PostEntity getPostById(@PathVariable long id) {
+    public @ResponseBody PostEntity getPostById(@PathVariable String id) {
         return postService
-                .getPostById(id);
+                .getPostById(Long.parseLong(id));
     }
 
     @PostMapping("/save")
@@ -31,9 +31,9 @@ public class PostController {
     }
 
     @PostMapping("/delete/{id}")
-    public void deletePostEntity(@PathVariable long id) {
+    public void deletePostEntity(@PathVariable String id) {
         postService
-                .deletePostById(id);
+                .deletePostById(Long.parseLong(id));
     }
 
     @PostMapping("/update/{id}")

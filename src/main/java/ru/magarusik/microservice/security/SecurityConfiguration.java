@@ -5,17 +5,21 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import ru.magarusik.microservice.service.UserService;
 
+import java.util.List;
+
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfiguration {
     @Autowired
     private UserService userService;
@@ -32,10 +36,11 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .sessionManagement(
-                        (session) -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                )
+        return http
+                .csrf().disable()
+                .cors(Customizer.withDefaults())
+                .sessionManagement((session) ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
 //                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
 //                .csrf(
 //                        (x) -> x.ignoringRequestMatchers("/**")
@@ -49,11 +54,11 @@ public class SecurityConfiguration {
                 .httpBasic(
                         (auth) -> auth
                                 .authenticationEntryPoint(
-                                (request, response, e) -> resolver
-                                        .resolveException(request, response, null, e)
+                                        (request, response, e) -> resolver
+                                                .resolveException(request, response, null, e)
                                 )
-                );
-        return http.build();
+                ).build();
+
     }
 
     @Bean
@@ -62,6 +67,16 @@ public class SecurityConfiguration {
         auth.setUserDetailsService(userService);
         auth.setPasswordEncoder(encoder.getEncoder());
         return auth;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        var configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:2121"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));;
+        var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
 
