@@ -19,14 +19,14 @@ import ru.magarusik.microservice.service.UserService;
 public class SecurityConfiguration {
     @Autowired
     private UserService userService;
-  
+
     @Autowired
     private JwtTokenRepository jwtTokenRepository;
-  
+
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
-  
+
     @Autowired
     private PasswordEncoder encoder;
 
@@ -34,18 +34,24 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .sessionManagement(
-                        (session) -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
-                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
-                .csrf((x) -> x.ignoringRequestMatchers("/**"))
+                        (session) -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                )
+//                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
+//                .csrf(
+//                        (x) -> x.ignoringRequestMatchers("/**")
+//                )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/registration", "/auth/login").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
+//                        .requestMatchers("/registration", "/auth/login").permitAll()
+//                        .anyRequest().authenticated()
                 )
                 .logout(LogoutConfigurer::permitAll)
                 .httpBasic(
-                        (auth) -> auth.authenticationEntryPoint(
-                                (request, response, e) -> resolver.resolveException(request, response, null, e)
-                        )
+                        (auth) -> auth
+                                .authenticationEntryPoint(
+                                (request, response, e) -> resolver
+                                        .resolveException(request, response, null, e)
+                                )
                 );
         return http.build();
     }

@@ -31,6 +31,11 @@ public class UserController {
         return user.get();
     }
 
+    @PostMapping("/register")
+    public void registerUser(@RequestBody UserEntity userEntity) {
+        userService.saveUser(userEntity);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public String handleException(RuntimeException exception) {
         return exception.getMessage();

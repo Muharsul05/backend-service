@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgresql:5432/test?createDatabaseIfNotExist=true
-    username: magarusik
-    password: 1312
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/test?createDatabaseIfNotExist=true}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:1312}
     driverClassName: org.postgresql.Driver
 
   jpa:
@@ -11,7 +11,7 @@ spring:
     show-sql: true
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
   servlet:
     context-path: /microservice/api
 
