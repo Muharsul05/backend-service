@@ -1,0 +1,55 @@
+version: "3.7"
+
+services:
+  postgresql:
+    container_name: postgresql
+    image: 'postgres:latest'
+    user: root
+    environment:
+      PGDATA: /var/lib/postgresql/data/test/
+    ports:
+      - 15432:5432
+    env_file:
+      - ./postgresql/.env
+    networks:
+      - postgres-network
+    volumes:
+      - ./postgresql/db-data/:/var/lib/postgresql/data/
+
+  pgadmin:
+    container_name: pgadmin
+    image: 'dpage/pgadmin4:latest'
+    user: root
+    ports:
+      - 15433:80
+    env_file:
+      - ./pgadmin/.env
+    depends_on:
+      - postgresql
+    networks:
+      - postgres-network
+    volumes:
+      - ./pgadmin/pgadmin-data/:/var/lib/pgadmin/
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+
+  backend-service:
+    build:
+      context: ..
+      dockerfile: ./backend-service/Dockerfile
+    restart: always
+    container_name: backend-service
+    user: root
+    ports:
+      - 8080:8080
+    env_file:
+      - ./backend-service/.env
+    networks:
+      - postgres-network
+    depends_on:
+      - postgresql
+    volumes:
+      - ./backend-service/maven_local_repo/:/root/.m2/
+
+networks:
+  postgres-network:
+    driver: bridge

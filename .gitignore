@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/docker/pgadmin/pgadmin-data/
+/docker/postgresql/db-data/
+/docker/backend-service/maven_local_repo/
