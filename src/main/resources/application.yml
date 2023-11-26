@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
 
   jackson:
@@ -31,7 +31,7 @@ management:
 
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /docs
   show-actuator: true
   swagger-ui:
-    path: /swagger-ui.html
+    path: /docs-ui.html
