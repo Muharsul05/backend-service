@@ -1,6 +1,6 @@
 package ru.magarusik.microservice.controller;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.magarusik.microservice.entity.PostEntity;
 import ru.magarusik.microservice.service.PostService;
@@ -9,9 +9,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/post")
-@AllArgsConstructor
 public class PostController {
-    private PostService postService;
+    private final PostService postService;
+
+    @Autowired
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping
     public @ResponseBody List<PostEntity> getAllPosts() {

@@ -1,6 +1,5 @@
 package ru.magarusik.microservice.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,12 +16,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserService implements UserDetailsService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder encoder;
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+    }
 
     public void saveUser(UserEntity userEntity) {
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));

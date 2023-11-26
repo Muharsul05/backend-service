@@ -8,7 +8,7 @@ services:
     environment:
       PGDATA: /var/lib/postgresql/data/test/
     ports:
-      - 15432:5432
+      - "15432:5432"
     env_file:
       - ./postgresql/.env
     networks:
@@ -21,7 +21,7 @@ services:
     image: 'dpage/pgadmin4:latest'
     user: root
     ports:
-      - 15433:80
+      - "15433:80"
     env_file:
       - ./pgadmin/.env
     depends_on:
@@ -40,7 +40,7 @@ services:
     container_name: backend-service
     user: root
     ports:
-      - 8080:8080
+      - "8080:8080"
     env_file:
       - ./backend-service/.env
     networks:

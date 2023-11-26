@@ -21,9 +21,7 @@ import java.io.IOException;
 
 @AllArgsConstructor
 public class JwtCsrfFilter extends OncePerRequestFilter {
-
     private final CsrfTokenRepository tokenRepository;
-
     private final HandlerExceptionResolver resolver;
 
     @Override

@@ -1,6 +1,5 @@
 package ru.magarusik.microservice.controller;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,11 +8,14 @@ import ru.magarusik.microservice.entity.UserEntity;
 import ru.magarusik.microservice.service.UserService;
 
 @RestController
-@AllArgsConstructor
 public class RegistrationController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
-  
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/registration")
     public void registration(@RequestBody UserEntity userEntity) {
         userService.saveUser(userEntity);

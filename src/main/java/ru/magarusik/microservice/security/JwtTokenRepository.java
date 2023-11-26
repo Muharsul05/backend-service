@@ -22,10 +22,12 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS
 @Repository
 @Getter
 public class JwtTokenRepository implements CsrfTokenRepository {
-    private String secret;
+    private final String secret;
+    public static final String HEADER_NAME = "x-csrf-token";
+    public static final String PARAMETER_NAME = "_csrf";
 
     public JwtTokenRepository() {
-        this.secret = "hello";
+        this.secret = "magarusik";
     }
 
     @Override
@@ -47,7 +49,7 @@ public class JwtTokenRepository implements CsrfTokenRepository {
         } catch (JwtException e) {
             e.printStackTrace();
         }
-        return new DefaultCsrfToken("x-csrf-token", "_csrf", token);
+        return new DefaultCsrfToken(HEADER_NAME, PARAMETER_NAME, token);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class JwtTokenRepository implements CsrfTokenRepository {
     }
 
     public void clearToken(HttpServletResponse response) {
-        if (response.getHeaderNames().contains("x-csrf-token"))
-            response.setHeader("x-csrf-token", "");
+        if (response.getHeaderNames().contains(HEADER_NAME))
+            response.setHeader(HEADER_NAME, "");
     }
 }

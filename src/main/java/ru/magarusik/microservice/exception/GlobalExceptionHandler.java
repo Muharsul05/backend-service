@@ -17,9 +17,9 @@ import ru.magarusik.microservice.security.JwtTokenRepository;
 @RestControllerAdvice
 @Getter
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @Autowired
-    private JwtTokenRepository tokenRepository;
+    private final JwtTokenRepository tokenRepository;
 
+    @Autowired
     public GlobalExceptionHandler(JwtTokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
@@ -37,17 +37,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         this.tokenRepository.clearToken(response);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "error.authorization");
+        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request));
     }
 
     @Getter
-    public class ErrorInfo {
+    public static class ErrorInfo {
         private final String url;
         private final String info;
 
-        ErrorInfo(String url, String info) {
+        ErrorInfo(String url) {
             this.url = url;
-            this.info = info;
+            this.info = "error.authorization";
         }
     }
 }

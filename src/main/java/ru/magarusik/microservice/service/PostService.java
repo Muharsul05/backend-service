@@ -1,6 +1,5 @@
 package ru.magarusik.microservice.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.magarusik.microservice.entity.PostEntity;
@@ -9,10 +8,14 @@ import ru.magarusik.microservice.repository.PostRepository;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class PostService {
+
+    private final PostRepository postRepository;
+
     @Autowired
-    private PostRepository postRepository;
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     public List<PostEntity> getAllPosts() {
         return postRepository

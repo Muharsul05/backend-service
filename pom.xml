@@ -16,6 +16,7 @@
         <liquidbase.version>4.23.0</liquidbase.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
     </properties>
 
     <parent>
@@ -92,6 +93,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquidbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
     </dependencies>
     <build>

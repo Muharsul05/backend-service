@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,9 +38,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .sessionManagement((session) ->
+                .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
 //                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
 //                .csrf(
@@ -52,7 +53,7 @@ public class SecurityConfiguration {
                 )
                 .logout(LogoutConfigurer::permitAll)
                 .httpBasic(
-                        (auth) -> auth
+                        auth -> auth
                                 .authenticationEntryPoint(
                                         (request, response, e) -> resolver
                                                 .resolveException(request, response, null, e)
@@ -73,7 +74,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:2121"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));;
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
