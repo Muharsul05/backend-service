@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/test?createDatabaseIfNotExist=true}
-    username: ${DATABASE_USERNAME:postgres}
+    username: ${DATABASE_USERNAME:magarusik}
     password: ${DATABASE_PASSWORD:1312}
     driverClassName: org.postgresql.Driver
 
