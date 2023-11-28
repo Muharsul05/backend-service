@@ -1,5 +1,7 @@
 package ru.magarusik.microservice.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@Hidden
+@Tag(name = "Пользователи", description = "Контроллер для работы с пользователями")
 public class UserController {
     private final UserService userService;
 

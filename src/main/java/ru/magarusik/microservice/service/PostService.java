@@ -36,7 +36,11 @@ public class PostService {
     }
 
     public void updatePostEntity(PostEntity postEntity) {
-        deletePostById(postEntity.getId());
+        deletePostById(postEntity.id());
         savePost(postEntity);
+    }
+
+    public void deleteAllPosts() {
+        postRepository.deleteAll();
     }
 }

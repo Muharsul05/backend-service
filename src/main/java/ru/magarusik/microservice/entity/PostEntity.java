@@ -2,33 +2,45 @@ package ru.magarusik.microservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
 
 import java.util.Date;
 
 @Entity(name = "post_entity")
-@Data
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class PostEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+@Tag(name = "Пост", description = "Сущность поста")
+public record PostEntity(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Schema(
+                name = "ID",
+                description = "Идентификатор",
+                example = "123"
+        ) long id,
+        @JsonFormat(pattern = "dd.MM.yyyy")
+        @Schema(
+                name = "Дата",
+                description = "Дата публикации поста: дд.мм.гггг (28.11.2023)"
+        ) Date date,
+        @Schema(
+                name = "Текст",
+                description = "Текст поста",
+                example = "Это тестовый пост"
+        ) String fullText,
+        @Schema(
+                name = "Заголовок",
+                description = "Заголовок поста",
+                example = "Тестовый пост"
+        ) String title,
+        @Schema(
+                name = "Тип",
+                description = "Тип поста",
+                example = "Тестовый пост"
+        ) String type
+) {
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
-    @Column(name = "date")
-    private Date date;
-
-    @Column(name = "full_text")
-    private String fullText;
-
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "type")
-    private String type;
 }

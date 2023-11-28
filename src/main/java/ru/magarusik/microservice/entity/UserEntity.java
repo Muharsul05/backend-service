@@ -1,5 +1,6 @@
 package ru.magarusik.microservice.entity;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@Hidden
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
