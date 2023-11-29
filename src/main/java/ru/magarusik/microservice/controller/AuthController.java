@@ -1,7 +1,7 @@
 package ru.magarusik.microservice.controller;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,14 +11,10 @@ import ru.magarusik.microservice.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
+@AllArgsConstructor
 @Hidden
 public class AuthController {
     private final UserService service;
-
-    @Autowired
-    public AuthController(UserService service) {
-        this.service = service;
-    }
 
     @PostMapping(path = "/login")
     public UserEntity getAuthUser(Authentication authentication) {

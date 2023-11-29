@@ -1,6 +1,5 @@
 package ru.magarusik.microservice.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.magarusik.microservice.entity.PostEntity;
 import ru.magarusik.microservice.repository.PostRepository;
@@ -9,10 +8,8 @@ import java.util.List;
 
 @Service
 public class PostService {
-
     private final PostRepository postRepository;
 
-    @Autowired
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -23,8 +20,11 @@ public class PostService {
     }
 
     public PostEntity getPostById(Long id) {
-        return postRepository
-                .getReferenceById(id);
+        var post = postRepository.getPostEntityById(id);
+        if (post == null) {
+            throw new RuntimeException("Post with id: " + id + " not found");
+        }
+        return post;
     }
 
     public void savePost(PostEntity postEntity) {
@@ -36,11 +36,7 @@ public class PostService {
     }
 
     public void updatePostEntity(PostEntity postEntity) {
-        deletePostById(postEntity.id());
+        deletePostById(postEntity.getId());
         savePost(postEntity);
-    }
-
-    public void deleteAllPosts() {
-        postRepository.deleteAll();
     }
 }

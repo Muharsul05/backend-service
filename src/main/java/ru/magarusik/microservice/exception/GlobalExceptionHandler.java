@@ -2,8 +2,8 @@ package ru.magarusik.microservice.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.csrf.InvalidCsrfTokenException;
@@ -15,14 +15,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ru.magarusik.microservice.security.JwtTokenRepository;
 
 @RestControllerAdvice
+@AllArgsConstructor
 @Getter
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final JwtTokenRepository tokenRepository;
-
-    @Autowired
-    public GlobalExceptionHandler(JwtTokenRepository tokenRepository) {
-        this.tokenRepository = tokenRepository;
-    }
 
     @ExceptionHandler({
             AuthenticationException.class,

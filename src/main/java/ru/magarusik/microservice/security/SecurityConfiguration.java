@@ -1,6 +1,5 @@
 package ru.magarusik.microservice.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,18 +21,17 @@ import java.util.List;
 @Configuration
 //@EnableWebSecurity
 public class SecurityConfiguration {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final JwtTokenRepository jwtTokenRepository;
+    private final HandlerExceptionResolver resolver;
+    private final PasswordEncoder encoder;
 
-    @Autowired
-    private JwtTokenRepository jwtTokenRepository;
-
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    public SecurityConfiguration(UserService userService, JwtTokenRepository jwtTokenRepository, @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver, PasswordEncoder encoder) {
+        this.userService = userService;
+        this.jwtTokenRepository = jwtTokenRepository;
+        this.resolver = resolver;
+        this.encoder = encoder;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

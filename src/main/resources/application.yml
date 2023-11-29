@@ -22,12 +22,13 @@ server:
 management:
   endpoints.web.exposure.include: 'prometheus, health'
   metrics:
-    export:
-      prometheus:
-        enabled: true
     distribution:
       percentiles-histogram:
         "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 springdoc:
   api-docs:
