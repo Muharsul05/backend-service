@@ -1,5 +1,6 @@
 package ru.magarusik.microservice.controller;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +26,9 @@ public class PostControllerTest {
     @Test
     public void shouldReturnsAllPosts() {
         Mockito.when(postRepository.findAll()).thenReturn(getPosts());
-        System.out.println(postService.getAllPosts());
+        var result = postService.getAllPosts();
+        Assertions.assertNotEquals(null,result);
+        Assertions.assertFalse(result.isEmpty());
     }
 
     private List<PostEntity> getPosts() {

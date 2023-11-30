@@ -1,4 +1,6 @@
-insert into post_entity (title, "full_text", date, "type")
+--liquibase formatted sql
+--changeset magarusik:insert-posts
+insert into post_entity (title, full_text, date, type)
 values ('Миграции схемы базы данных с Liquibase',
         'Большая часть приложений, которые мне встречались, хранят данные в SQL базе данных. Приложение публикуется на несколько стендов: стенд разработки, пре-прод и прод. А над приложением трудится команда разработчиков.',
         current_date,

@@ -9,13 +9,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(name = "post_entity")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Getter
 @Setter
 @Builder
@@ -28,7 +29,7 @@ public class PostEntity {
     private long id;
 
     @JsonFormat(pattern = "dd.MM.yyyy")
-    @Schema(name = "date", description = "Дата публикации поста: дд.мм.гггг (28.11.2023)", example = "29.11.2023",pattern = "dd.MM.yyyy")
+    @Schema(name = "date", description = "Дата публикации поста: дд.мм.гггг (28.11.2023)", example = "29.11.2023", pattern = "dd.MM.yyyy")
     private Date date;
 
     @Schema(name = "fullText", description = "Текст поста", example = "Это тестовый пост")
@@ -39,4 +40,20 @@ public class PostEntity {
 
     @Schema(name = "type", description = "Тип поста", example = "type")
     private String type;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        PostEntity that = (PostEntity) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }
