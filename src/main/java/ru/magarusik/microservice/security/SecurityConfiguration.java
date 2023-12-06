@@ -26,7 +26,11 @@ public class SecurityConfiguration {
     private final HandlerExceptionResolver resolver;
     private final PasswordEncoder encoder;
 
-    public SecurityConfiguration(UserService userService, JwtTokenRepository jwtTokenRepository, @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver, PasswordEncoder encoder) {
+    public SecurityConfiguration(UserService userService,
+                                 JwtTokenRepository jwtTokenRepository,
+                                 @Qualifier("handlerExceptionResolver")
+                                 HandlerExceptionResolver resolver, PasswordEncoder encoder
+    ) {
         this.userService = userService;
         this.jwtTokenRepository = jwtTokenRepository;
         this.resolver = resolver;

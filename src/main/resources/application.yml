@@ -9,6 +9,9 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   jackson:
     serialization:
@@ -36,3 +39,9 @@ springdoc:
   show-actuator: true
   swagger-ui:
     path: /docs-ui.html
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
