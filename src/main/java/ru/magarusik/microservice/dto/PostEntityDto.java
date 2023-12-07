@@ -1,10 +1,17 @@
 package ru.magarusik.microservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @Builder
-public record PostEntityDto(long id, Date date, String fullText, String title, String type) {
+public record PostEntityDto(
+        String id,
+        @JsonFormat(pattern = "dd-MM-yyyy") LocalDate date,
+        String fullText,
+        String title,
+        String type
+) {
 }

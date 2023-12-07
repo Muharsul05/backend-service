@@ -8,7 +8,7 @@ import ru.magarusik.microservice.entity.PostEntity;
 public class Converter {
     public static PostEntityDto postEntityToPostEntityDTO(PostEntity postEntity) {
         return PostEntityDto.builder()
-                .id(postEntity.getId())
+                .id(Long.toString(postEntity.getId()))
                 .title(postEntity.getTitle())
                 .fullText(postEntity.getFullText())
                 .date(postEntity.getDate())

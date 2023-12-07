@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(name = "post_entity")
 @NoArgsConstructor
@@ -26,10 +26,10 @@ public class PostEntity {
     @Min(1)
     private long id;
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Schema(name = "date", description = "Дата публикации поста: дд.мм.гггг (28.11.2023)", example = "29.11.2023", pattern = "dd.MM.yyyy")
     @NotBlank
-    private Date date;
+    private LocalDate date;
 
     @Schema(name = "fullText", description = "Текст поста", example = "Это тестовый пост")
     private String fullText;
