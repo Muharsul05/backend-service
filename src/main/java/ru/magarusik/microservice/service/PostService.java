@@ -2,7 +2,7 @@ package ru.magarusik.microservice.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.magarusik.microservice.dto.PostEntityDto;
+import ru.magarusik.microservice.dto.PostEntityDTO;
 import ru.magarusik.microservice.entity.PostEntity;
 import ru.magarusik.microservice.entity.PostType;
 import ru.magarusik.microservice.exception.PostNotFoundException;
@@ -16,7 +16,7 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
-    public List<PostEntityDto> getAllPosts() {
+    public List<PostEntityDTO> getAllPosts() {
         return postRepository
                 .getAll()
                 .stream()
@@ -24,7 +24,7 @@ public class PostService {
                 .toList();
     }
 
-    public PostEntityDto getPostById(long id) {
+    public PostEntityDTO getPostById(long id) {
         var post = postRepository.getPostEntityById(id);
         if (post == null) {
             throw new PostNotFoundException("Post with id: " + id + " not found");
@@ -45,7 +45,7 @@ public class PostService {
         savePost(postEntity);
     }
 
-    public List<PostEntityDto> getPostEntityByType(PostType type) {
+    public List<PostEntityDTO> getPostEntityByType(PostType type) {
         return postRepository
                 .getPostEntityByType(type)
                 .stream()

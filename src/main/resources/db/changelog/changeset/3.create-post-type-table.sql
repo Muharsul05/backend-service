@@ -10,8 +10,7 @@ create table post_type
 --changeset magarusik:insert-postTypes
 insert into post_type (name)
 values ('news'),
-       ('post'),
-       ('blog');
+       ('note');
 
 --changeset magarusik:addForeignKeyConstraint-post-type-id
 ALTER TABLE post_entity

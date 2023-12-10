@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 
 @Builder
-public record PostEntityDto(
+public record PostEntityDTO(
         String id,
         @JsonFormat(pattern = "dd-MM-yyyy") LocalDate date,
         String fullText,

@@ -25,25 +25,26 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver resolver;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        request.setAttribute(HttpServletResponse.class.getName(), response);
-        CsrfToken csrfToken = this.tokenRepository.loadToken(request);
-        boolean missingToken = csrfToken == null;
-        if (missingToken) {
-            csrfToken = this.tokenRepository.generateToken(request);
-            this.tokenRepository.saveToken(csrfToken, request, response);
-        }
+
+        var csrfToken = loadToken(request, response);
+        csrfToken = generateNewTokenIfMissingAndSaveToRepository(csrfToken, request, response);
 
         request.setAttribute(CsrfToken.class.getName(), csrfToken);
         request.setAttribute(csrfToken.getParameterName(), csrfToken);
-        if (request.getServletPath().equals("/auth/login")) {
+
+        if ("/auth/login".equals(request.getServletPath())) {
             try {
                 filterChain.doFilter(request, response);
             } catch (Exception e) {
-                resolver.resolveException(request, response, null, new MissingCsrfTokenException(csrfToken.getToken()));
+                resolver.resolveException(request,
+                        response,
+                        null,
+                        new MissingCsrfTokenException(csrfToken.getToken())
+                );
             }
         } else {
             String actualToken = request.getHeader(csrfToken.getHeaderName());
@@ -63,13 +64,26 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
                 if (this.logger.isDebugEnabled()) {
                     this.logger.debug("Invalid CSRF token found for " + UrlUtils.buildFullRequestUrl(request));
                 }
-
-                if (missingToken) {
-                    resolver.resolveException(request, response, null, new MissingCsrfTokenException(actualToken));
-                } else {
-                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
-                }
+                resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
             }
         }
+    }
+
+    private CsrfToken generateNewTokenIfMissingAndSaveToRepository(
+            CsrfToken csrfToken,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        var token = csrfToken == null ? this.tokenRepository.generateToken(request) : csrfToken;
+        this.tokenRepository.saveToken(csrfToken, request, response);
+        return token;
+    }
+
+    private CsrfToken loadToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        request.setAttribute(HttpServletResponse.class.getName(), response);
+        return this.tokenRepository.loadToken(request);
     }
 }

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.magarusik.microservice.dto.PostEntityDto;
+import ru.magarusik.microservice.dto.PostEntityDTO;
 import ru.magarusik.microservice.entity.PostEntity;
 import ru.magarusik.microservice.service.PostService;
 import ru.magarusik.microservice.service.PostTypeService;
@@ -12,7 +12,7 @@ import ru.magarusik.microservice.service.PostTypeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @AllArgsConstructor
 @Tag(
         name = "Контроллер постов",
@@ -24,14 +24,14 @@ public class PostController {
 
     @GetMapping
     @Operation(summary = "Получить все посты", description = "Позволяет получить список всех постов")
-    public @ResponseBody List<PostEntityDto> getAllPosts() {
+    public List<PostEntityDTO> getAllPosts() {
         return postService
                 .getAllPosts();
     }
 
     @GetMapping("/get/{id}")
     @Operation(summary = "Получить пост", description = "Получить пост по идентификатору")
-    public @ResponseBody PostEntityDto getPostById(@PathVariable String id) {
+    public PostEntityDTO getPostById(@PathVariable String id) {
         return postService
                 .getPostById(Long.parseLong(id));
     }
@@ -58,7 +58,7 @@ public class PostController {
     }
 
     @GetMapping("/type/{name}")
-    public List<PostEntityDto> getPostsByType(@PathVariable String name) {
+    public List<PostEntityDTO> getPostsByType(@PathVariable String name) {
         var postType = postTypeService.getPostTypeByName(name);
         return postService.getPostEntityByType(postType);
     }

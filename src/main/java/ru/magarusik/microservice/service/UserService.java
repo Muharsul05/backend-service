@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
                 .findAll();
     }
 
-    public Optional<UserEntity> getUserEntityById(Long id) throws RuntimeException {
+    public Optional<UserEntity> getUserEntityById(long id) {
         return userRepository.findById(id);
     }
 

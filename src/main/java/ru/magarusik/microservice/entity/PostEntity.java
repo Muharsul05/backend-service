@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ToString
 @Tag(name = "Пост", description = "Сущность поста")
 public class PostEntity {
     @Id
@@ -40,5 +41,6 @@ public class PostEntity {
     @Schema(name = "type", description = "Тип поста", example = "type")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
+    @ToString.Exclude
     private PostType type;
 }

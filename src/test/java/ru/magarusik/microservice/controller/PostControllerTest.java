@@ -8,15 +8,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.magarusik.microservice.entity.PostEntity;
+import ru.magarusik.microservice.entity.PostType;
 import ru.magarusik.microservice.repository.PostRepository;
 import ru.magarusik.microservice.service.PostService;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class PostControllerTest {
-
+    public static final LocalDate CURRENT_DATE = LocalDate.parse(LocalDate.now().toString());
+    public static final PostType TYPE = new PostType(1, "type");
     @Mock
     private PostRepository postRepository;
 
@@ -24,10 +26,10 @@ public class PostControllerTest {
     private PostService postService;
 
     @Test
-    public void shouldReturnsAllPosts() {
-        Mockito.when(postRepository.findAll()).thenReturn(getPosts());
+    void shouldReturnsAllPosts() {
+        Mockito.when(postRepository.getAll()).thenReturn(getPosts());
         var result = postService.getAllPosts();
-        Assertions.assertNotEquals(null,result);
+        Assertions.assertNotEquals(null, result);
         Assertions.assertFalse(result.isEmpty());
     }
 
@@ -38,18 +40,16 @@ public class PostControllerTest {
                                 .id(1)
                                 .title("Title1")
                                 .fullText("Full Text")
-                                .date(new Date())
-                                .type("type")
+                                .date(CURRENT_DATE)
+                                .type(TYPE)
                                 .build(),
                         PostEntity.builder()
                                 .id(2)
                                 .title("Title2")
                                 .fullText("Full Text")
-                                .date(new Date())
-                                .type("type")
+                                .date(CURRENT_DATE)
+                                .type(TYPE)
                                 .build()
                 );
     }
-
-
 }
