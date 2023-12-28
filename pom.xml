@@ -17,12 +17,13 @@
         <jaxb.api.version>2.3.1</jaxb.api.version>
         <jjwt.version>0.9.1</jjwt.version>
         <snakeyaml.version>2.2</snakeyaml.version>
+        <logback-version>1.4.12</logback-version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.1.6</version>
         <relativePath/>
     </parent>
 
@@ -106,6 +107,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-version}</version>
         </dependency>
     </dependencies>
     <build>
