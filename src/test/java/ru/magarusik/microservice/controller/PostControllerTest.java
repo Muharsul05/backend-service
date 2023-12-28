@@ -18,20 +18,31 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class PostControllerTest {
     public static final LocalDate CURRENT_DATE = LocalDate.parse(LocalDate.now().toString());
-    public static final PostType TYPE = new PostType(1, "type");
+    public static final PostType TYPE = PostType.builder().id(1).name("type").build();
     @Mock
     private PostRepository postRepository;
 
     @InjectMocks
     private PostService postService;
 
+
     @Test
     void shouldReturnsAllPosts() {
-        Mockito.when(postRepository.getAll()).thenReturn(getPosts());
+        Mockito.when(postRepository.findAll()).thenReturn(getPosts());
         var result = postService.getAllPosts();
         Assertions.assertNotEquals(null, result);
         Assertions.assertFalse(result.isEmpty());
+        System.out.println(result);
     }
+
+    @Test
+    void shouldReturnPostByID() {
+        Mockito.when(postRepository.findAll()).thenReturn(getPosts());
+        var result = postService.getPostById(1);
+        System.out.println(result);
+        Assertions.assertNotNull(result);
+    }
+
 
     private List<PostEntity> getPosts() {
         return List

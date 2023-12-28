@@ -2,8 +2,10 @@ package ru.magarusik.microservice.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.magarusik.microservice.dto.PostEntityDTO;
 import ru.magarusik.microservice.entity.PostType;
 import ru.magarusik.microservice.repository.PostTypeRepository;
+import ru.magarusik.microservice.utils.Converter;
 
 import java.util.List;
 
@@ -12,12 +14,18 @@ import java.util.List;
 public class PostTypeService {
     private final PostTypeRepository postTypeRepository;
 
-    public List<PostType> getAllPostTypes() {
-        return postTypeRepository.findAll();
-    }
 
     public PostType getPostTypeByName(String name) {
-        return postTypeRepository.getPostTypeByNameIgnoreCase(name);
+        var postType = postTypeRepository.getPostTypeByNameIgnoreCase(name);
+        if (postType.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Post type with name: %s not found", name));
+        }
+        return postType.get();
     }
 
+    public List<PostEntityDTO> getPostsByType(PostType type) {
+        return type.getPosts().stream()
+                .map(Converter::postEntityToPostEntityDTO)
+                .toList();
+    }
 }

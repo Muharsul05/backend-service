@@ -2,14 +2,16 @@ package ru.magarusik.microservice.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.magarusik.microservice.dto.PostEntityDTO;
-import ru.magarusik.microservice.entity.PostEntity;
-import ru.magarusik.microservice.entity.PostType;
 import ru.magarusik.microservice.exception.PostNotFoundException;
 import ru.magarusik.microservice.repository.PostRepository;
 import ru.magarusik.microservice.utils.Converter;
 
 import java.util.List;
+
+import static ru.magarusik.microservice.utils.Converter.postEntityDTOToPostEntity;
+import static ru.magarusik.microservice.utils.Converter.postEntityToPostEntityDTO;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class PostService {
 
     public List<PostEntityDTO> getAllPosts() {
         return postRepository
-                .getAll()
+                .findAll()
                 .stream()
                 .map(Converter::postEntityToPostEntityDTO)
                 .toList();
@@ -26,32 +28,22 @@ public class PostService {
 
     public PostEntityDTO getPostById(long id) {
         var post = postRepository.getPostEntityById(id);
-        if (post == null) {
+        if (post.isEmpty()) {
             throw new PostNotFoundException("Post with id: " + id + " not found");
         }
-        return Converter.postEntityToPostEntityDTO(post);
+        return postEntityToPostEntityDTO(post.get());
     }
 
-    public void savePost(PostEntity postEntity) {
-        postRepository.save(postEntity);
+    public void savePost(@RequestBody PostEntityDTO postEntityDTO) {
+        var post = postEntityDTOToPostEntity(postEntityDTO);
+        postRepository.save(post);
     }
 
     public void deletePostById(Long id) {
         postRepository.deleteById(id);
     }
 
-    public void updatePostEntity(PostEntity postEntity) {
-        deletePostById(postEntity.getId());
-        savePost(postEntity);
+    public void updatePostEntity(PostEntityDTO postEntityDTO) {
+        savePost(postEntityDTO);
     }
-
-    public List<PostEntityDTO> getPostEntityByType(PostType type) {
-        return postRepository
-                .getPostEntityByType(type)
-                .stream()
-                .map(Converter::postEntityToPostEntityDTO)
-                .toList();
-    }
-
-
 }

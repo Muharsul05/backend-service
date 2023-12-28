@@ -3,8 +3,8 @@ package ru.magarusik.microservice.controller;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.magarusik.microservice.entity.UserEntity;
-import ru.magarusik.microservice.exception.UserEntityNotFoundException;
+import ru.magarusik.microservice.dto.UserEntityDTO;
+import ru.magarusik.microservice.exception.UserNotFoundException;
 import ru.magarusik.microservice.service.UserService;
 
 import java.util.List;
@@ -17,24 +17,22 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserEntity> getAllUsers() {
+    public List<UserEntityDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping(value = "/{id}")
-    public UserEntity getUserEntity(@PathVariable Long id) throws UserEntityNotFoundException {
+    public UserEntityDTO getUserEntity(@PathVariable Long id) throws UserNotFoundException {
         var user = userService.getUserEntityById(id);
-
-        if (user.isEmpty()) {
-            throw new UserEntityNotFoundException(String.format("User with id: %d not found", id));
+        if (user == null) {
+            throw new UserNotFoundException(String.format("User with id: %d not found", id));
         }
-
-        return user.get();
+        return user;
     }
 
     @PostMapping("/register")
-    public void registerUser(@RequestBody UserEntity userEntity) {
-        userService.saveUser(userEntity);
+    public void registerUser(UserEntityDTO userEntityDTO) {
+        userService.saveUser(userEntityDTO);
     }
 
     @ExceptionHandler(RuntimeException.class)

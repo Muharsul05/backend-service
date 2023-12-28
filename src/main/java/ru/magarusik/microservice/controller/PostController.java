@@ -3,17 +3,19 @@ package ru.magarusik.microservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 import ru.magarusik.microservice.dto.PostEntityDTO;
-import ru.magarusik.microservice.entity.PostEntity;
 import ru.magarusik.microservice.service.PostService;
 import ru.magarusik.microservice.service.PostTypeService;
 
 import java.util.List;
+import java.util.logging.Level;
 
 @RestController
 @RequestMapping("/posts")
 @AllArgsConstructor
+@Log
 @Tag(
         name = "Контроллер постов",
         description = "Контроллер для работы с постами"
@@ -38,9 +40,10 @@ public class PostController {
 
     @PostMapping("/save")
     @Operation(summary = "Сохранить пост", description = "Позволяет сохранить пост")
-    public void savePostEntity(@RequestBody PostEntity postEntity) {
+    public void savePostEntity(PostEntityDTO postEntityDTO) {
+        log.log(Level.INFO, String.valueOf(postEntityDTO));
         postService
-                .savePost(postEntity);
+                .savePost(postEntityDTO);
     }
 
     @PostMapping("/delete/{id}")
@@ -50,17 +53,17 @@ public class PostController {
                 .deletePostById(Long.parseLong(id));
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/update")
     @Operation(summary = "Обновить пост", description = "Позволяет обновить пост под идентификатором")
-    public void updatePostEntity(PostEntity postEntity) {
+    public void updatePostEntity(PostEntityDTO postEntityDTO) {
         postService
-                .updatePostEntity(postEntity);
+                .updatePostEntity(postEntityDTO);
     }
 
     @GetMapping("/type/{name}")
-    public List<PostEntityDTO> getPostsByType(@PathVariable String name) {
+    public List<PostEntityDTO> getPostsByTypeName(@PathVariable String name) {
         var postType = postTypeService.getPostTypeByName(name);
-        return postService.getPostEntityByType(postType);
+        return postTypeService.getPostsByType(postType);
     }
 
     @ExceptionHandler(RuntimeException.class)

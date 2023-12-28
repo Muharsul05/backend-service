@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
+import lombok.extern.java.Log;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
@@ -16,11 +17,13 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS;
 
 @Repository
 @Getter
+@Log
 public class JwtTokenRepository implements CsrfTokenRepository {
     private final String secret;
     public static final String HEADER_NAME = "x-csrf-token";
@@ -47,7 +50,7 @@ public class JwtTokenRepository implements CsrfTokenRepository {
                     .signWith(SignatureAlgorithm.HS256, secret)
                     .compact();
         } catch (JwtException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, e.getMessage(), e);
         }
         return new DefaultCsrfToken(HEADER_NAME, PARAMETER_NAME, token);
     }

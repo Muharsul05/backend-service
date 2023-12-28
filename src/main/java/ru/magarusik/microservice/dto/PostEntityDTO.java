@@ -5,7 +5,6 @@ import lombok.Builder;
 
 import java.time.LocalDate;
 
-
 @Builder
 public record PostEntityDTO(
         String id,

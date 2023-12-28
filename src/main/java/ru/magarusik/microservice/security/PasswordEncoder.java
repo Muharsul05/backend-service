@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Getter
 public final class PasswordEncoder {
-    private static final PasswordEncoder instance = null;
     private final BCryptPasswordEncoder encoder;
 
     public PasswordEncoder() {

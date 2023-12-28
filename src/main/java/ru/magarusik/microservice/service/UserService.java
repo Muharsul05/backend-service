@@ -1,60 +1,70 @@
 package ru.magarusik.microservice.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.magarusik.microservice.dto.UserEntityDTO;
 import ru.magarusik.microservice.entity.UserEntity;
 import ru.magarusik.microservice.repository.UserRepository;
 import ru.magarusik.microservice.security.PasswordEncoder;
+import ru.magarusik.microservice.utils.Converter;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+
+import static ru.magarusik.microservice.utils.Converter.userEntityToUserEntityDTO;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.encoder = encoder;
-    }
-
-    public void saveUser(UserEntity userEntity) {
-        userEntity.setPassword(encoder.encode(userEntity.getPassword()));
+    public void saveUser(UserEntityDTO userEntityDTO) {
+        var userEntity = UserEntity.builder()
+                .username(userEntityDTO.username())
+                .password(passwordEncoder.encode(userEntityDTO.password()))
+                .email(userEntityDTO.email())
+                .build();
         userRepository.save(userEntity);
     }
 
-    public List<UserEntity> getAllUsers() {
+    public List<UserEntityDTO> getAllUsers() {
         return userRepository
-                .findAll();
+                .findAll().stream()
+                .map(Converter::userEntityToUserEntityDTO)
+                .toList();
     }
 
-    public Optional<UserEntity> getUserEntityById(long id) {
-        return userRepository.findById(id);
+    public UserEntityDTO getUserEntityById(long id) {
+        return userEntityToUserEntityDTO(
+                userRepository.getReferenceById(id)
+        );
     }
 
-    public UserEntity getUserEntityByName(String name) {
-        return userRepository
-                .findByName(name)
-                .orElse(null);
+    public UserEntityDTO getUserEntityByUsername(String username) {
+        var user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User with " + username + " not found");
+        }
+        return userEntityToUserEntityDTO(user.get());
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        var user = getUserEntityByName(login);
+        var user = getUserEntityByUsername(login);
 
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException(String.format("User %s is not found", login));
         }
 
         return new User(
-                user.getName(),
-                user.getPassword(),
+                user.username(),
+                user.password(),
                 true,
                 true,
                 true,

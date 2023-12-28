@@ -6,11 +6,13 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
         info = @Info(
+                version = "1.0.0",
                 title = "Backend Service API",
-                description = "Backend Service for blog", version = "1.0.0",
+                description = "Backend Service for blog",
                 contact = @Contact(
                         name = "Magarusik",
-                        email = "@Magarusik"
+                        email = "@Magarusik",
+                        url = "https://github.com/Muharsul05"
                 )
         )
 )

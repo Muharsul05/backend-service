@@ -1,6 +1,6 @@
 --liquibase formatted sql
 --changeset magarusik:insert-posts
-insert into post_entity (title, full_text, date, type_id)
+insert into posts (title, full_text, date, type_id)
 values ('Миграции схемы базы данных с Liquibase',
         'Большая часть приложений, которые мне встречались, хранят данные в SQL базе данных. Приложение публикуется на несколько стендов: стенд разработки, пре-прод и прод. А над приложением трудится команда разработчиков.',
         current_date,
@@ -17,4 +17,3 @@ values ('Миграции схемы базы данных с Liquibase',
         'Spliterator обладает специальными характеристиками, которые сообщают об особенностях источника данных, из которого он был создан.',
         current_date,
         2);
-

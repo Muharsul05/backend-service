@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.magarusik.microservice.entity.UserEntity;
+import ru.magarusik.microservice.dto.UserEntityDTO;
 import ru.magarusik.microservice.service.UserService;
 
 @RestController
@@ -14,10 +14,10 @@ import ru.magarusik.microservice.service.UserService;
 @AllArgsConstructor
 @Hidden
 public class AuthController {
-    private final UserService service;
+    private final UserService userService;
 
     @PostMapping(path = "/login")
-    public UserEntity getAuthUser(Authentication authentication) {
-        return service.getUserEntityByName(authentication.getName());
+    public UserEntityDTO getAuthUser(Authentication authentication) {
+        return userService.getUserEntityByUsername(authentication.getName());
     }
 }
