@@ -62,8 +62,8 @@ public class PostController {
 
     @GetMapping("/type/{name}")
     public List<PostEntityDTO> getPostsByTypeName(@PathVariable String name) {
-        var postType = postTypeService.getPostTypeByName(name);
-        return postTypeService.getPostsByType(postType);
+        return postTypeService
+                .getPostsByType(postTypeService.getPostTypeByName(name));
     }
 
     @ExceptionHandler(RuntimeException.class)

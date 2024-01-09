@@ -18,7 +18,8 @@ public class UserController {
 
     @GetMapping
     public List<UserEntityDTO> getAllUsers() {
-        return userService.getAllUsers();
+        return userService
+                .getAllUsers();
     }
 
     @GetMapping(value = "/{id}")
@@ -32,11 +33,13 @@ public class UserController {
 
     @PostMapping("/register")
     public void registerUser(UserEntityDTO userEntityDTO) {
-        userService.saveUser(userEntityDTO);
+        userService
+                .saveUser(userEntityDTO);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public String handleException(RuntimeException exception) {
-        return exception.getMessage();
+        return exception
+                .getMessage();
     }
 }

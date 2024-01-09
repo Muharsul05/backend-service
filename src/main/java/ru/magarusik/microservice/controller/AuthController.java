@@ -18,6 +18,7 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     public UserEntityDTO getAuthUser(Authentication authentication) {
-        return userService.getUserEntityByUsername(authentication.getName());
+        return userService
+                .getUserEntityByUsername(authentication.getName());
     }
 }

@@ -15,6 +15,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public void registration(UserEntityDTO userEntityDTO) {
-        userService.saveUser(userEntityDTO);
+        userService
+                .saveUser(userEntityDTO);
     }
 }

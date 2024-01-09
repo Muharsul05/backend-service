@@ -20,7 +20,7 @@ public class PostService {
 
     public List<PostEntityDTO> getAllPosts() {
         return postRepository
-                .findAll()
+                .findAllByOrderByDateDesc()
                 .stream()
                 .map(Converter::postEntityToPostEntityDTO)
                 .toList();
